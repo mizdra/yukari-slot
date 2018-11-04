@@ -1,6 +1,6 @@
-import { Button, Layout } from 'antd'
+import { Layout } from 'antd'
 import React from 'react'
-import yukari from '../static/img/yukari.png'
+import { Content as MyContent } from './Content'
 
 const { Footer, Content } = Layout
 
@@ -8,11 +8,7 @@ export function App () {
   return (
     <>
       <Layout>
-        <Content>
-          <div>Titile</div>
-          <div><Button>さなボタン #いいえ</Button></div>
-          <div><img src={yukari} alt='Yukari'/></div>
-        </Content>
+        <Content><MyContent /></Content>
         <Footer>Footer</Footer>
       </Layout>
     </>
