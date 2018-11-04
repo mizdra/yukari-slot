@@ -20,6 +20,13 @@ module.exports = {
   module: {
     rules: [
       { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'img/[name].[hash].[ext]',
+        },
+      },
     ],
   },
 
