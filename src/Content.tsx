@@ -1,7 +1,7 @@
 import { Button } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
-import yukari from '../static/img/yukari.png'
+import { Slot } from './Slot';
 
 const Container = styled.div`
   display: flex;
@@ -14,8 +14,7 @@ export function Content () {
     <Container>
       <div>
         <div>Titile</div>
-        <div><Button>さなボタン #いいえ</Button></div>
-        <div><img src={yukari} alt='Yukari'/></div>
+        <Slot />
       </div>
     </Container>
   )
