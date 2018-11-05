@@ -30,19 +30,20 @@ export function Slot () {
   const lowerDateSymbols = getLowerDateSymbols(upperMonth, lowerMonth, upperDate)
 
   const emitStopSignal = () => {
+    setSignals([!signals[0], false, false, false])
     console.log('emit')
   }
 
   return (
     <div>
       <YukariFace>
-        <YukariEye stopSignal={signals[0]} symbols={upperMonthSymbols} onStop={setUpperMonth} />
-        <YukariEye stopSignal={signals[1]} symbols={lowerMonthSymbols} onStop={setLowerMonth} />
+        <YukariEye type='right' stopSignal={signals[0]} symbols={upperMonthSymbols} onStop={setUpperMonth} />
+        {/* <YukariEye type='left' stopSignal={signals[1]} symbols={lowerMonthSymbols} onStop={setLowerMonth} /> */}
       </YukariFace>
       <Unit>月</Unit>
       <YukariFace>
-        <YukariEye stopSignal={signals[2]} symbols={upperDateSymbols} onStop={setUpperDate} />
-        <YukariEye stopSignal={signals[3]} symbols={lowerDateSymbols} onStop={setLowerDate} />
+        {/* <YukariEye type='right' stopSignal={signals[2]} symbols={upperDateSymbols} onStop={setUpperDate} />
+        <YukariEye type='left' stopSignal={signals[3]} symbols={lowerDateSymbols} onStop={setLowerDate} /> */}
       </YukariFace>
       <Unit>日</Unit>
       <Button onClick={emitStopSignal}>ストップ</Button>

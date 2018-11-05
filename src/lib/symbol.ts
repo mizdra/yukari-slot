@@ -1,7 +1,7 @@
 import { Symbol } from '../YukariEye'
 
 export function getUpperMonthSymbols (): Symbol[] {
-  return [0, 1, 2]
+  return [0, 1]
 }
 
 export function getLowerMonthSymbols (upperMonth?: number): Symbol[] {

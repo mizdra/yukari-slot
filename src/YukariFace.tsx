@@ -6,5 +6,9 @@ export interface Props {
 }
 
 export function YukariFace (props: Props) {
-  return <img src={yukari} width='256' height='256' alt='Yukari'/>
+  return (
+    <div>
+      {props.children}
+    </div>
+  )
 }
