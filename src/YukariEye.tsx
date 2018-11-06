@@ -4,7 +4,6 @@ import styled from 'styled-components'
 export type Symbol = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export interface Props {
-  type: 'right' | 'left'
   stopSignal: boolean
   symbols: Symbol[]
   onStop: (symbol: Symbol) => void
@@ -107,22 +106,26 @@ export function YukariEye (props: Props) {
       const target = symbolRefs[1].current
       const translateY = getTranslateY(target)
       const index = Math.floor(((-translateY + 25) % target.clientHeight) / 50)
+      console.log(`onStop: ${symbols[index]}`)
       onStop(symbols[index])
     }
   }, [stopSignal])
 
   // unmount
   useEffect(() => {
+    console.log('play')
+
     const animation = new SpinAnimation(symbolRefs.map(ref => ref.current))
     animation.play()
     animationRef.current = animation
 
     return () => {
+      console.log('cleanup')
       if (animationRef.current !== null) {
         animationRef.current.cancel()
       }
     }
-  }, [])
+  }, [symbols.length])
 
   return (
     <SymbolView>

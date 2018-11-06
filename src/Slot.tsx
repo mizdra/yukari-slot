@@ -22,7 +22,7 @@ export function Slot () {
   const [upperDate, setUpperDate] = useState<number | undefined>(undefined)
   const [lowerDate, setLowerDate] = useState<number | undefined>(undefined)
 
-  const [signals, setSignals] = useState<[boolean, boolean, boolean, boolean]>([false, false, false, false])
+  const [stopSingalCount, setStopSignalCount] = useState<number>(0)
 
   const upperMonthSymbols = getUpperMonthSymbols()
   const lowerMonthSymbols = getLowerMonthSymbols(upperMonth)
@@ -30,20 +30,20 @@ export function Slot () {
   const lowerDateSymbols = getLowerDateSymbols(upperMonth, lowerMonth, upperDate)
 
   const emitStopSignal = () => {
-    setSignals([!signals[0], false, false, false])
+    setStopSignalCount(prev => prev + 1)
     console.log('emit')
   }
 
   return (
     <div>
       <YukariFace>
-        <YukariEye type='right' stopSignal={signals[0]} symbols={upperMonthSymbols} onStop={setUpperMonth} />
-        {/* <YukariEye type='left' stopSignal={signals[1]} symbols={lowerMonthSymbols} onStop={setLowerMonth} /> */}
+        <YukariEye stopSignal={stopSingalCount >= 1} symbols={upperMonthSymbols} onStop={setUpperMonth} />
+        <YukariEye stopSignal={stopSingalCount >= 2} symbols={lowerMonthSymbols} onStop={setLowerMonth} />
       </YukariFace>
       <Unit>月</Unit>
       <YukariFace>
-        {/* <YukariEye type='right' stopSignal={signals[2]} symbols={upperDateSymbols} onStop={setUpperDate} />
-        <YukariEye type='left' stopSignal={signals[3]} symbols={lowerDateSymbols} onStop={setLowerDate} /> */}
+        <YukariEye stopSignal={stopSingalCount >= 3} symbols={upperDateSymbols} onStop={setUpperDate} />
+        <YukariEye stopSignal={stopSingalCount >= 4} symbols={lowerDateSymbols} onStop={setLowerDate} />
       </YukariFace>
       <Unit>日</Unit>
       <Button onClick={emitStopSignal}>ストップ</Button>
