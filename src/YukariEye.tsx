@@ -48,11 +48,12 @@ class SpinAnimation {
   constructor (targets: HTMLElement[]) {
     this.animations = targets
       .map(target => {
+        const symbolSize = target.clientHeight / 50
         const animation = target.animate([
           { transform: `translateY(${-1 * target.clientHeight}px)` },
           { transform: 'translateY(0px)' },
         ] as Keyframe[], {
-          duration: 1000,
+          duration: symbolSize * 150,
           iterations: Infinity,
         })
         animation.pause()
