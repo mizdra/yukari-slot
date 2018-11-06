@@ -91,6 +91,8 @@ function Reel (props: { refs: React.RefObject<HTMLDivElement>, symbols: Symbol[]
 export function YukariEye (props: Props) {
   const { stopSignal, onStop, symbols } = props
 
+  const [hitSymbol, setHitSymbol] = useState<Symbol | null>(null)
+
   const symbolRefs = [
     useRef<HTMLDivElement>(null as any),
     useRef<HTMLDivElement>(null as any),
@@ -108,6 +110,7 @@ export function YukariEye (props: Props) {
       const translateY = getTranslateY(target)
       const index = Math.floor(((-translateY + 25) % target.clientHeight) / 50)
       console.log(`onStop: ${symbols[index]}`)
+      setHitSymbol(symbols[index])
       onStop(symbols[index])
     }
   }, [stopSignal])
@@ -128,11 +131,19 @@ export function YukariEye (props: Props) {
     }
   }, [symbols.length])
 
+  if (hitSymbol === null) {
+    return (
+      <SymbolView>
+        <Reel refs={symbolRefs[0] as any} symbols={symbols}/>
+        <Reel refs={symbolRefs[1] as any} symbols={symbols}/>
+        <Reel refs={symbolRefs[2] as any} symbols={symbols}/>
+      </SymbolView>
+    )
+  }
+
   return (
     <SymbolView>
-      <Reel refs={symbolRefs[0] as any} symbols={symbols}/>
-      <Reel refs={symbolRefs[1] as any} symbols={symbols}/>
-      <Reel refs={symbolRefs[2] as any} symbols={symbols}/>
+      <Symbol>{hitSymbol}</Symbol>
     </SymbolView>
   )
 }
