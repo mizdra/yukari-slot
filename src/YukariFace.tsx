@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { face, hairback, hair } from './parts'
+import { face, hair, hairback } from './parts'
 
 export interface Props {
   children: React.ReactNode
@@ -30,7 +30,7 @@ const Mask = styled.div<{hair: string}>`
 
 export function YukariFace (props: Props) {
   return (
-    <Container face={face} hairback={hairback} hair={hair}>
+    <Container face={face} hairback={hairback}>
       <Mask hair={hair} />
       {props.children}
     </Container>

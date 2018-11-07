@@ -1,7 +1,6 @@
-import { Button } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
-import { Slot } from './Slot';
+import { Slot } from './Slot'
 
 const Container = styled.div`
   display: flex;
