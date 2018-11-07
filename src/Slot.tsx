@@ -11,6 +11,21 @@ const useState: <T>(
 
 const useEffect: (f: () => void) => void = (React as any).useEffect
 
+function createTweetLink (leftEye?: number, rightEye?: number): string {
+  const text =
+    leftEye === undefined || rightEye === undefined ?
+      'エラー'
+    : leftEye === 1 && rightEye === 1 ?
+      'ゆかりちゃん完成！！！'
+    :
+      'ゆかりスロット失敗 😥'
+
+  const encodedText = encodeURIComponent(text)
+  const encodedHashtags = encodeURIComponent('ゆかりスロット')
+  const url = encodeURIComponent(`https://www.example.com/?leftEye=${leftEye}&rightEye=${rightEye}`)
+  return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${url}`
+}
+
 function ActionButton (props: {} & ButtonProps) {
   return (
     <Button
@@ -64,7 +79,7 @@ export function Slot () {
         <ActionButton
           disabled={rightEye === undefined}
           type='primary'
-          href={`https://twitter.com/intent/tweet?text=test`}
+          href={createTweetLink(leftEye, rightEye)}
           target='_blank'
         >結果をツイート！
         </ActionButton>
