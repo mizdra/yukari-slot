@@ -23,6 +23,8 @@ export const useRef: UseRef = (React as any).useRef
 const SymbolView = styled.div<{height: number}>`
   height: ${props => props.height}px;
   overflow-y: hidden;
+  transform: translateX(145%);
+  margin: 30% 4% 0;
 `
 
 interface SymbolProps {
