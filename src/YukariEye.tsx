@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { eyes } from './parts'
 
 export interface Props {
@@ -25,6 +25,12 @@ const SymbolView = styled.div<{height: number}>`
   overflow-y: hidden;
   transform: translateX(145%);
   margin: 30% 4% 0;
+`
+
+const Display = styled.div<{visible: boolean}>`
+  ${props => !props.visible && css`
+    display: none;
+  `}
 `
 
 interface SymbolProps {
@@ -56,20 +62,6 @@ export function YukariEye ({
 
   const animationRef = useRef<Animation | null>(null)
 
-  // stop
-  useEffect(() => {
-    if (!animationRef.current) return
-    if (stopSignal) {
-      animationRef.current.pause()
-      const target = reelRef.current
-      const translateY = getTranslateY(target)
-      const index = Math.floor(((-translateY + (symbolHight / 2)) % target.clientHeight) / symbolHight)
-      console.log(`onStop: ${symbols[index]}`)
-      setHitSymbol(symbols[index])
-      onStop(symbols[index])
-    }
-  }, [stopSignal])
-
   // unmount
   useEffect(() => {
     console.log('play')
@@ -83,7 +75,7 @@ export function YukariEye ({
       duration: duration * symbols.length * 3,
       iterations: Infinity,
     })
-    animation.play()
+    animation.pause()
     animationRef.current = animation
 
     return () => {
@@ -94,22 +86,38 @@ export function YukariEye ({
     }
   }, [symbols.length])
 
-  if (hitSymbol === null) {
-    return (
-      <SymbolView height={symbolHight}>
+  // stop
+  useEffect(() => {
+    console.log('signal changed: ', stopSignal, animationRef.current)
+    if (!animationRef.current) return
+    if (stopSignal) {
+      animationRef.current.pause()
+      const target = reelRef.current
+      const translateY = getTranslateY(target)
+      const index = Math.floor(((-translateY + (symbolHight / 2)) % target.clientHeight) / symbolHight)
+      console.log(`onStop: ${symbols[index]}`)
+      setHitSymbol(symbols[index])
+      onStop(symbols[index])
+    } else {
+      animationRef.current.play()
+      setHitSymbol(null)
+    }
+  }, [stopSignal])
+
+  return (
+    <SymbolView height={symbolHight}>
+      <Display visible={hitSymbol === null}>
         <div ref={reelRef as any}>
           {
             [...symbols, ...symbols, ...symbols]
               .map((symbol, i) => <Symbol key={i} height={symbolHight} value={symbol} />)
           }
         </div>
-      </SymbolView>
-    )
-  }
-
-  return (
-    <SymbolView height={symbolHight}>
-      <Symbol height={symbolHight} value={hitSymbol} />
+      </Display>
+      {
+        hitSymbol !== null &&
+          <Symbol height={symbolHight} value={hitSymbol} />
+      }
     </SymbolView>
   )
 }

@@ -1,4 +1,5 @@
 import { Button } from 'antd'
+import { ButtonProps } from 'antd/lib/button'
 import React from 'react'
 import styled from 'styled-components'
 import { YukariEye } from './YukariEye'
@@ -9,6 +10,17 @@ const useState: <T>(
 ) => [T, (prev: T | ((t: T) => T)) => void] = (React as any).useState
 
 const useEffect: (f: () => void) => void = (React as any).useEffect
+
+function ActionButton (props: {} & ButtonProps) {
+  return (
+    <Button
+      {...props}
+      style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px', ...props.style }}
+      block
+      size='large'
+    />
+  )
+}
 
 export function Slot () {
   const [leftEye, setLeftEye] = useState<number | undefined>(undefined)
@@ -21,6 +33,12 @@ export function Slot () {
     console.log('emit')
   }
 
+  const retry = () => {
+    setStopSignalCount(0)
+    setLeftEye(undefined)
+    setRightEye(undefined)
+  }
+
   return (
     <div>
       <YukariFace>
@@ -29,22 +47,27 @@ export function Slot () {
       </YukariFace>
 
       <div>
-        <Button
-          style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px', background: '#d01f1f', color: 'white' }}
-          block
-          size='large'
-          onClick={emitStopSignal}
-        >とめる！
-        </Button>
-        <Button
-          style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px' }}
-          block
-          disabled={leftEye === undefined || rightEye === undefined}
+        {
+          rightEye === undefined ?
+            <ActionButton
+              style={{ background: '#d01f1f', color: 'white' }}
+              onClick={emitStopSignal}
+            >とめる！
+            </ActionButton>
+          :
+            <ActionButton
+              style={{ background: '#eee', color: '#333' }}
+              onClick={retry}
+            >もう一回！
+            </ActionButton>
+        }
+        <ActionButton
+          disabled={rightEye === undefined}
           type='primary'
           href={`https://twitter.com/intent/tweet?text=test`}
           target='_blank'
         >結果をツイート！
-        </Button>
+        </ActionButton>
       </div>
     </div>
   )
