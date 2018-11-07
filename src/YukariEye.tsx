@@ -7,6 +7,7 @@ export interface Props {
   symbols: number[]
   onStop: (symbol: number) => void
   symbolHight: number
+  duration: number
 }
 
 export type UseState = <T>(initialState: T | (() => T)) => [T, (newState: T | ((newState: T) => T)) => void]
@@ -72,7 +73,7 @@ export function YukariEye (props: Props) {
       { transform: `translateY(${-1 * target.clientHeight / 3}px)` },
       { transform: 'translateY(0px)' },
     ] as Keyframe[], {
-      duration: symbols.length * 1000,
+      duration: props.duration * symbols.length * 3,
       iterations: Infinity,
     })
     animation.play()
