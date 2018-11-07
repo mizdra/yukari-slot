@@ -21,17 +21,15 @@ export function Slot () {
     console.log('emit')
   }
 
-  const symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div>
       <YukariFace>
-        <YukariEye duration={200} symbolHight={131} stopSignal={stopSingalCount >= 1} symbols={symbols} onStop={setLeftEye} />
-        <YukariEye duration={200} symbolHight={131} stopSignal={stopSingalCount >= 2} symbols={symbols} onStop={setRightEye} />
+        <YukariEye stopSignal={stopSingalCount >= 1} onStop={setLeftEye} />
+        <YukariEye stopSignal={stopSingalCount >= 2} onStop={setRightEye} />
       </YukariFace>
       <Button onClick={emitStopSignal}>ストップ</Button>
       {
-        rightEye !== undefined &&
+        leftEye !== undefined && rightEye !== undefined &&
         <Button
           type='primary'
           href={`https://twitter.com/intent/tweet?text=test`}

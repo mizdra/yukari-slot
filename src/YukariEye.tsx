@@ -4,10 +4,10 @@ import { eyes } from './parts'
 
 export interface Props {
   stopSignal: boolean
-  symbols: number[]
   onStop: (symbol: number) => void
-  symbolHight: number
-  duration: number
+  symbols?: number[]
+  symbolHight?: number
+  duration?: number
 }
 
 export type UseState = <T>(initialState: T | (() => T)) => [T, (newState: T | ((newState: T) => T)) => void]
@@ -42,8 +42,13 @@ function getTranslateY (elem: HTMLElement) {
   return parseInt(translateY, 10)
 }
 
-export function YukariEye (props: Props) {
-  const { stopSignal, onStop, symbols } = props
+export function YukariEye ({
+  symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  symbolHight = 130,
+  duration = 30,
+  onStop,
+  stopSignal,
+}: Props) {
 
   const [hitSymbol, setHitSymbol] = useState<number | null>(null)
 
@@ -58,7 +63,7 @@ export function YukariEye (props: Props) {
       animationRef.current.pause()
       const target = reelRef.current
       const translateY = getTranslateY(target)
-      const index = Math.floor(((-translateY + (props.symbolHight / 2)) % target.clientHeight) / props.symbolHight)
+      const index = Math.floor(((-translateY + (symbolHight / 2)) % target.clientHeight) / symbolHight)
       console.log(`onStop: ${symbols[index]}`)
       setHitSymbol(symbols[index])
       onStop(symbols[index])
@@ -75,7 +80,7 @@ export function YukariEye (props: Props) {
       { transform: `translateY(${-1 * target.clientHeight / 3}px)` },
       { transform: 'translateY(0px)' },
     ] as Keyframe[], {
-      duration: props.duration * symbols.length * 3,
+      duration: duration * symbols.length * 3,
       iterations: Infinity,
     })
     animation.play()
@@ -91,11 +96,11 @@ export function YukariEye (props: Props) {
 
   if (hitSymbol === null) {
     return (
-      <SymbolView height={props.symbolHight}>
+      <SymbolView height={symbolHight}>
         <div ref={reelRef as any}>
           {
             [...symbols, ...symbols, ...symbols]
-              .map((symbol, i) => <Symbol key={i} height={props.symbolHight} value={symbol} />)
+              .map((symbol, i) => <Symbol key={i} height={symbolHight} value={symbol} />)
           }
         </div>
       </SymbolView>
@@ -103,8 +108,8 @@ export function YukariEye (props: Props) {
   }
 
   return (
-    <SymbolView height={props.symbolHight}>
-      <Symbol height={props.symbolHight} value={hitSymbol} />
+    <SymbolView height={symbolHight}>
+      <Symbol height={symbolHight} value={hitSymbol} />
     </SymbolView>
   )
 }
