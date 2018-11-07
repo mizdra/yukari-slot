@@ -37,13 +37,13 @@ export function Slot () {
   return (
     <div>
       <YukariFace>
-        <YukariEye symbolHight={50} stopSignal={stopSingalCount >= 1} symbols={upperMonthSymbols} onStop={setUpperMonth} />
-        <YukariEye symbolHight={50} stopSignal={stopSingalCount >= 2} symbols={lowerMonthSymbols} onStop={setLowerMonth} />
+        <YukariEye symbolHight={100} stopSignal={stopSingalCount >= 1} symbols={upperMonthSymbols} onStop={setUpperMonth} />
+        <YukariEye symbolHight={100} stopSignal={stopSingalCount >= 2} symbols={lowerMonthSymbols} onStop={setLowerMonth} />
       </YukariFace>
       <Unit>月</Unit>
       <YukariFace>
-        <YukariEye symbolHight={50} stopSignal={stopSingalCount >= 3} symbols={upperDateSymbols} onStop={setUpperDate} />
-        <YukariEye symbolHight={50} stopSignal={stopSingalCount >= 4} symbols={lowerDateSymbols} onStop={setLowerDate} />
+        <YukariEye symbolHight={100} stopSignal={stopSingalCount >= 3} symbols={upperDateSymbols} onStop={setUpperDate} />
+        <YukariEye symbolHight={100} stopSignal={stopSingalCount >= 4} symbols={lowerDateSymbols} onStop={setLowerDate} />
       </YukariFace>
       <Unit>日</Unit>
       <Button onClick={emitStopSignal}>ストップ</Button>

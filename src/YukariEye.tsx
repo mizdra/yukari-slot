@@ -55,7 +55,7 @@ export function YukariEye (props: Props) {
       animationRef.current.pause()
       const target = reelRef.current
       const translateY = getTranslateY(target)
-      const index = Math.floor(((-translateY + 25) % target.clientHeight) / 50)
+      const index = Math.floor(((-translateY + (props.symbolHight / 2)) % target.clientHeight) / props.symbolHight)
       console.log(`onStop: ${symbols[index]}`)
       setHitSymbol(symbols[index])
       onStop(symbols[index])
@@ -92,7 +92,7 @@ export function YukariEye (props: Props) {
         <div ref={reelRef as any}>
           {
             [...symbols, ...symbols, ...symbols]
-              .map((symbol, i) => <Symbol key={i} height={50} value={symbol} />)
+              .map((symbol, i) => <Symbol key={i} height={props.symbolHight} value={symbol} />)
           }
         </div>
       </SymbolView>
@@ -101,7 +101,7 @@ export function YukariEye (props: Props) {
 
   return (
     <SymbolView height={props.symbolHight}>
-      <Symbol height={50} value={hitSymbol} />
+      <Symbol height={props.symbolHight} value={hitSymbol} />
     </SymbolView>
   )
 }
