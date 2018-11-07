@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { eyes } from './parts'
 
 export type Symbol = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
@@ -7,6 +8,7 @@ export interface Props {
   stopSignal: boolean
   symbols: Symbol[]
   onStop: (symbol: Symbol) => void
+  symbolHight: number
 }
 
 export type UseState = <T>(initialState: T | (() => T)) => [T, (newState: T | ((newState: T) => T)) => void]
@@ -19,33 +21,24 @@ export interface ReactRef<T> {current: T}
 export type UseRef = <T>(initialValue: T) => ReactRef<T>
 export const useRef: UseRef = (React as any).useRef
 
-const SymbolView = styled.div`
-  width: 50px;
-  height: 50px;
-  font-size: 30px;
-  line-height: 50px;
+const SymbolView = styled.div<{height: number}>`
+  height: ${props => props.height}px;
   overflow-y: hidden;
-  /* position: relative; */
 `
 
-const Symbol = styled.div`
-  /* position: absolute; */
-  text-align: center;
-  width: 50px;
-`
+interface SymbolProps {
+  height: number
+  value: number
+}
+
+function Symbol (props: SymbolProps) {
+  return <img src={eyes[props.value]} height={props.height} style={{ display: 'block' }} />
+}
 
 function getTranslateY (elem: HTMLElement) {
   const matrix = getComputedStyle(elem).transform || 'matrix(0, 0, 0, 0, 0, 0)'
   const translateY = matrix.match(/matrix\(.*\, (.*)\)/)![1]
   return parseInt(translateY, 10)
-}
-
-function Reel (props: { symbols: Symbol[] }) {
-  return (
-    <div>
-      {props.symbols.map((symbol, i) => <Symbol key={i}>{symbol}</Symbol>)}
-    </div>
-  )
 }
 
 export function YukariEye (props: Props) {
@@ -97,17 +90,20 @@ export function YukariEye (props: Props) {
 
   if (hitSymbol === null) {
     return (
-      <SymbolView>
+      <SymbolView height={props.symbolHight}>
         <div ref={reelRef as any}>
-          <Reel symbols={[...symbols, ...symbols, ...symbols]}/>
+          {
+            [...symbols, ...symbols, ...symbols]
+              .map((symbol, i) => <Symbol key={i} height={50} value={symbol} />)
+          }
         </div>
       </SymbolView>
     )
   }
 
   return (
-    <SymbolView>
-      <Symbol>{hitSymbol}</Symbol>
+    <SymbolView height={props.symbolHight}>
+      <Symbol height={50} value={hitSymbol} />
     </SymbolView>
   )
 }
