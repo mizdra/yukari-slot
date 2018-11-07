@@ -40,49 +40,9 @@ function getTranslateY (elem: HTMLElement) {
   return parseInt(translateY, 10)
 }
 
-class SpinAnimation {
-  private animations: Animation[]
-  private finishCount = 0
-  private finishHandler: () => void = () => 0
-
-  constructor (targets: HTMLElement[]) {
-    this.animations = targets
-      .map(target => {
-        const symbolSize = target.clientHeight / 50
-        const animation = target.animate([
-          { transform: `translateY(${-1 * target.clientHeight}px)` },
-          { transform: 'translateY(0px)' },
-        ] as Keyframe[], {
-          duration: symbolSize * 150,
-          iterations: Infinity,
-        })
-        animation.pause()
-        return animation
-      })
-  }
-  play () {
-    this.animations.forEach(animation => {
-      animation.play()
-      animation.onfinish = () => {
-        this.finishCount++
-        if (this.finishCount === this.animations.length) {
-          this.finishCount = 0
-          this.finishHandler()
-        }
-      }
-    })
-  }
-  pause () {
-    this.animations.forEach(animation => animation.pause())
-  }
-  cancel () {
-    this.animations.forEach(animation => animation.cancel())
-  }
-}
-
-function Reel (props: { refs: React.RefObject<HTMLDivElement>, symbols: Symbol[] }) {
+function Reel (props: { symbols: Symbol[] }) {
   return (
-    <div ref={props.refs}>
+    <div>
       {props.symbols.map((symbol, i) => <Symbol key={i}>{symbol}</Symbol>)}
     </div>
   )
@@ -93,20 +53,16 @@ export function YukariEye (props: Props) {
 
   const [hitSymbol, setHitSymbol] = useState<Symbol | null>(null)
 
-  const symbolRefs = [
-    useRef<HTMLDivElement>(null as any),
-    useRef<HTMLDivElement>(null as any),
-    useRef<HTMLDivElement>(null as any),
-  ]
+  const reelRef = useRef<HTMLDivElement>(null as any)
 
-  const animationRef = useRef<SpinAnimation | null>(null)
+  const animationRef = useRef<Animation | null>(null)
 
   // stop
   useEffect(() => {
     if (!animationRef.current) return
     if (stopSignal) {
       animationRef.current.pause()
-      const target = symbolRefs[1].current
+      const target = reelRef.current
       const translateY = getTranslateY(target)
       const index = Math.floor(((-translateY + 25) % target.clientHeight) / 50)
       console.log(`onStop: ${symbols[index]}`)
@@ -119,7 +75,15 @@ export function YukariEye (props: Props) {
   useEffect(() => {
     console.log('play')
 
-    const animation = new SpinAnimation(symbolRefs.map(ref => ref.current))
+    const target = reelRef.current
+
+    const animation = target.animate([
+      { transform: `translateY(${-1 * target.clientHeight / 3}px)` },
+      { transform: 'translateY(0px)' },
+    ] as Keyframe[], {
+      duration: symbols.length * 1000,
+      iterations: Infinity,
+    })
     animation.play()
     animationRef.current = animation
 
@@ -134,9 +98,9 @@ export function YukariEye (props: Props) {
   if (hitSymbol === null) {
     return (
       <SymbolView>
-        <Reel refs={symbolRefs[0] as any} symbols={symbols}/>
-        <Reel refs={symbolRefs[1] as any} symbols={symbols}/>
-        <Reel refs={symbolRefs[2] as any} symbols={symbols}/>
+        <div ref={reelRef as any}>
+          <Reel symbols={[...symbols, ...symbols, ...symbols]}/>
+        </div>
       </SymbolView>
     )
   }

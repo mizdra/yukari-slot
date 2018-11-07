@@ -47,6 +47,15 @@ export function Slot () {
       </YukariFace>
       <Unit>日</Unit>
       <Button onClick={emitStopSignal}>ストップ</Button>
+      {
+        lowerDate !== undefined &&
+        <Button
+          type='primary'
+          href={`https://twitter.com/intent/tweet?text=test`}
+          target='_blank'
+        >結果をツイート
+        </Button>
+      }
     </div>
   )
 }
