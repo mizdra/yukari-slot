@@ -1,17 +1,15 @@
-import { Symbol } from '../YukariEye'
-
-export function getUpperMonthSymbols (): Symbol[] {
+export function getUpperMonthSymbols (): number[] {
   return [0, 1]
 }
 
-export function getLowerMonthSymbols (upperMonth?: number): Symbol[] {
+export function getLowerMonthSymbols (upperMonth?: number): number[] {
   if (upperMonth === undefined) return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] // 1 - 12月
   if (upperMonth === 0) return [1, 2, 3, 4, 5, 6, 7, 8, 9] // 1 - 9 月
   if (upperMonth === 1) return [0, 1, 2] // 10 - 12月
   throw new Error(`Invalid upperMonth(${upperMonth})`)
 }
 
-export function getUpperDateSymbols (upperMonth?: number, lowerMonth?: number): Symbol[] {
+export function getUpperDateSymbols (upperMonth?: number, lowerMonth?: number): number[] {
   if (upperMonth === undefined) return [0, 1, 2, 3] // 1 - 12月は最大31日まで
   if (lowerMonth === undefined) return [0, 1, 2, 3] // 1 - 9月/10 - 12月は最大31日まで
 
@@ -20,7 +18,7 @@ export function getUpperDateSymbols (upperMonth?: number, lowerMonth?: number): 
   return [0, 1, 2, 3] // 2月以外は最大30/31日まで
 }
 
-export function getLowerDateSymbols (upperMonth?: number, lowerMonth?: number, upperDate?: number): Symbol[] {
+export function getLowerDateSymbols (upperMonth?: number, lowerMonth?: number, upperDate?: number): number[] {
   // 月が確定していない時
   if (upperMonth === undefined) return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   if (lowerMonth === undefined) return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]

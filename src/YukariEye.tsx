@@ -2,12 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { eyes } from './parts'
 
-export type Symbol = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-
 export interface Props {
   stopSignal: boolean
-  symbols: Symbol[]
-  onStop: (symbol: Symbol) => void
+  symbols: number[]
+  onStop: (symbol: number) => void
   symbolHight: number
 }
 
@@ -44,7 +42,7 @@ function getTranslateY (elem: HTMLElement) {
 export function YukariEye (props: Props) {
   const { stopSignal, onStop, symbols } = props
 
-  const [hitSymbol, setHitSymbol] = useState<Symbol | null>(null)
+  const [hitSymbol, setHitSymbol] = useState<number | null>(null)
 
   const reelRef = useRef<HTMLDivElement>(null as any)
 
