@@ -5,6 +5,7 @@
     "tslint-react"
   ],
   "rules": {
+    "jsx-boolean-value": [true, "never"],
     "jsx-no-multiline-js": false,
     "ordered-imports": true,
     "indent": [true, "spaces", 2],

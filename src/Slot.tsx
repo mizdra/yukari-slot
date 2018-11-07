@@ -27,16 +27,25 @@ export function Slot () {
         <YukariEye stopSignal={stopSingalCount >= 1} onStop={setLeftEye} />
         <YukariEye stopSignal={stopSingalCount >= 2} onStop={setRightEye} />
       </YukariFace>
-      <Button onClick={emitStopSignal}>ストップ</Button>
-      {
-        leftEye !== undefined && rightEye !== undefined &&
+
+      <div>
         <Button
+          style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px', background: '#d01f1f', color: 'white' }}
+          block
+          size='large'
+          onClick={emitStopSignal}
+        >とめる！
+        </Button>
+        <Button
+          style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px' }}
+          block
+          disabled={leftEye === undefined || rightEye === undefined}
           type='primary'
           href={`https://twitter.com/intent/tweet?text=test`}
           target='_blank'
-        >結果をツイート
+        >結果をツイート！
         </Button>
-      }
+      </div>
     </div>
   )
 }

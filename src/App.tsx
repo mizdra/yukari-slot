@@ -1,16 +1,43 @@
-import { Layout } from 'antd'
 import React from 'react'
-import { Content as MyContent } from './Content'
+import styled from 'styled-components'
+import { Slot } from './Slot'
 
-const { Footer, Content } = Layout
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-family: "M PLUS Rounded 1c";
+`
+
+const Description = styled.div`
+  font-size: 40px;
+  font-weight: bold;
+  padding: 20px;
+  text-align: center;
+`
+
+const Footer = styled.div`
+  /* background: #eee; */
+  color: #777;
+  text-align: center;
+  margin-top: 30px;
+  padding: 20px 0;
+  border-top: 1px solid #ddd;
+`
 
 export function App () {
   return (
     <>
-      <Layout>
-        <Content><MyContent /></Content>
-        <Footer>Footer</Footer>
-      </Layout>
+      <Container>
+        <Description>
+          ボタンを押してゆかりちゃんを完成させよう！
+        </Description>
+        <Slot />
+      </Container>
+      <Footer>
+        created by <a href='https://twitter.com/mizdra'>@mizdra</a>.
+      </Footer>
     </>
   )
 }
