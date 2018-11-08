@@ -46,52 +46,61 @@ function getTranslateY (elem: HTMLElement) {
   return parseInt(translateY, 10)
 }
 
-export function YukariEye ({
-  symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  duration = 30,
-  onStop,
-  stopSignal,
-}: Props) {
+async function waitImageLoaded (src: string) {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.src = src
+    img.onload = resolve
+  })
+}
 
-  const [hitSymbol, setHitSymbol] = useState<number | null>(null)
+async function waitEyeLoaded () {
+  await Promise.all(eyes.map(waitImageLoaded))
+}
 
-  const reelRef = useRef<HTMLDivElement>(null as any)
+function useSpin (reelRef: ReactRef<HTMLDivElement | null>, symbolSize: number, duration: number) {
+  const [animation, setAnimation] = useState<Animation | null>(null)
 
-  const animationRef = useRef<Animation | null>(null)
-
-  // unmount
-  useEffect(() => {
+  useEffect(async () => {
     console.log('play')
 
     const target = reelRef.current
+    if (target === null) return
+
+    await waitEyeLoaded()
 
     console.log(`target.clientHeight: ${target.clientHeight}`)
 
-    const animation = target.animate([
+    const a = target.animate([
       { transform: 'translateY(0px)' },
       { transform: `translateY(${target.clientHeight / 3}px)` },
     ] as Keyframe[], {
-      duration: duration * symbols.length * 3,
+      duration: duration * symbolSize * 3,
       iterations: Infinity,
     })
-    animation.pause()
-    animationRef.current = animation
-    console.log(animation)
+    a.pause()
+    setAnimation(a)
+    console.log(a)
 
     return () => {
       console.log('cleanup')
-      if (animationRef.current !== null) {
-        animationRef.current.cancel()
-      }
+      a.cancel()
     }
-  }, [symbols.length])
+  }, [symbolSize])
 
-  // stop
+  return animation
+}
+
+function useStop (animation: Animation | null, reelRef: ReactRef<HTMLDivElement | null>, symbols: number[], stopSignal: boolean, onStop: (symbol: number) => void) {
+
+  const [hitSymbol, setHitSymbol] = useState<number | null>(null)
+
   useEffect(() => {
-    if (!animationRef.current) return
+    if (!animation) return
     if (stopSignal) {
-      animationRef.current.pause()
+      animation.pause()
       const target = reelRef.current
+      if (target === null) return
       const translateY = getTranslateY(target)
 
       const symbolHeight = target.clientHeight / 3 / symbols.length
@@ -100,10 +109,28 @@ export function YukariEye ({
       setHitSymbol(symbols[index])
       onStop(symbols[index])
     } else {
-      animationRef.current.play()
+      animation.play()
       setHitSymbol(null)
     }
-  }, [stopSignal])
+  }, [stopSignal, animation])
+
+  return hitSymbol
+}
+
+export function YukariEye ({
+  symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  duration = 30,
+  onStop,
+  stopSignal,
+}: Props) {
+
+  const reelRef = useRef<HTMLDivElement>(null as any)
+
+  // unmount
+  const animation = useSpin(reelRef, symbols.length, duration)
+
+  // stop
+  const hitSymbol = useStop(animation, reelRef, symbols, stopSignal, onStop)
 
   return (
     <SymbolView>
