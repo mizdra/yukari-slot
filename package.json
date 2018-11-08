@@ -39,6 +39,7 @@
     "antd": "^3.10.4",
     "route-parser": "^0.0.5",
     "styled-components": "^4.0.3",
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "web-animations-js": "^2.3.1"
   }
 }
