@@ -21,6 +21,9 @@ export const useRef: UseRef = (React as any).useRef
 
 const SymbolView = styled.div`
   overflow-y: hidden;
+  position: relative;
+  height: 100%;
+  width: 100%;
 `
 
 const Display = styled.div<{visible: boolean}>`
@@ -63,8 +66,8 @@ export function YukariEye ({
     const target = reelRef.current
 
     const animation = target.animate([
-      { transform: `translateY(${-1 * target.clientHeight / 3}px)` },
       { transform: 'translateY(0px)' },
+      { transform: `translateY(${target.clientHeight / 3}px)` },
     ] as Keyframe[], {
       duration: duration * symbols.length * 3,
       iterations: Infinity,
@@ -88,8 +91,11 @@ export function YukariEye ({
       animationRef.current.pause()
       const target = reelRef.current
       const translateY = getTranslateY(target)
-      const index = 0
-      console.log(`translateY: ${translateY}`)
+
+      const symbolHeight = target.clientHeight / 3 / symbols.length
+      const index = Math.round(translateY / symbolHeight) % symbols.length
+
+      console.log(`translateY: ${translateY}, symbolHeight: ${symbolHeight}, div: ${translateY / symbolHeight}`)
       console.log(`onStop: ${symbols[index]}`)
       setHitSymbol(symbols[index])
       onStop(symbols[index])
@@ -101,8 +107,8 @@ export function YukariEye ({
 
   return (
     <SymbolView>
-      <Display visible={hitSymbol === null}>
-        <div ref={reelRef as any}>
+      <Display visible={hitSymbol === null} style={{ position: 'absolute', bottom: 0 }}>
+        <div ref={reelRef as any} style={{ display: 'flex', flexDirection: 'column-reverse' }}>
           {
             [...symbols, ...symbols, ...symbols]
               .map((symbol, i) => <Symbol key={i} value={symbol} />)
