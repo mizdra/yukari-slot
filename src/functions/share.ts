@@ -22,7 +22,7 @@ function responseSharePage (callback: Callack, num: string) {
         <meta property="og:title" content="ゆかりスロット" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://yukari-slot.netlify.com" />
-        <meta property="og:image" content="https://yukari-slot.netlify.com/img/yukari.png" />
+        <meta property="og:image" content="https://yukari-slot.netlify.com/number/${num}.png" />
         <meta property="og:description" content="ボタンを押してゆかりちゃんを完成させよう！" />
         <meta property="og:locale" content="ja_JP" />
         <meta property="og:site_name" content="ゆかりスロット" />
