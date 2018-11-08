@@ -85,7 +85,6 @@ export function YukariEye ({
 
   // stop
   useEffect(() => {
-    console.log('signal changed: ', stopSignal, animationRef.current)
     if (!animationRef.current) return
     if (stopSignal) {
       animationRef.current.pause()
@@ -95,8 +94,6 @@ export function YukariEye ({
       const symbolHeight = target.clientHeight / 3 / symbols.length
       const index = Math.round(translateY / symbolHeight) % symbols.length
 
-      console.log(`translateY: ${translateY}, symbolHeight: ${symbolHeight}, div: ${translateY / symbolHeight}`)
-      console.log(`onStop: ${symbols[index]}`)
       setHitSymbol(symbols[index])
       onStop(symbols[index])
     } else {

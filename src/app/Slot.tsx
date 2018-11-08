@@ -45,7 +45,6 @@ export function Slot () {
 
   const emitStopSignal = () => {
     setStopSignalCount(prev => prev + 1)
-    console.log('emit')
   }
 
   const retry = () => {
