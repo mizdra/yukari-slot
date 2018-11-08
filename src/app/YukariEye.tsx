@@ -6,7 +6,6 @@ export interface Props {
   stopSignal: boolean
   onStop: (symbol: number) => void
   symbols?: number[]
-  symbolHight?: number
   duration?: number
 }
 
@@ -20,11 +19,8 @@ export interface ReactRef<T> {current: T}
 export type UseRef = <T>(initialValue: T) => ReactRef<T>
 export const useRef: UseRef = (React as any).useRef
 
-const SymbolView = styled.div<{height: number}>`
-  height: ${props => props.height}px;
+const SymbolView = styled.div`
   overflow-y: hidden;
-  transform: translateX(145%);
-  margin: 30% 4% 0;
 `
 
 const Display = styled.div<{visible: boolean}>`
@@ -34,12 +30,11 @@ const Display = styled.div<{visible: boolean}>`
 `
 
 interface SymbolProps {
-  height: number
   value: number
 }
 
 function Symbol (props: SymbolProps) {
-  return <img src={eyes[props.value]} height={props.height} style={{ display: 'block' }} />
+  return <img src={eyes[props.value]} width='100%' height='100%' style={{ display: 'block' }} />
 }
 
 function getTranslateY (elem: HTMLElement) {
@@ -50,7 +45,6 @@ function getTranslateY (elem: HTMLElement) {
 
 export function YukariEye ({
   symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  symbolHight = 130,
   duration = 30,
   onStop,
   stopSignal,
@@ -94,7 +88,8 @@ export function YukariEye ({
       animationRef.current.pause()
       const target = reelRef.current
       const translateY = getTranslateY(target)
-      const index = Math.floor(((-translateY + (symbolHight / 2)) % target.clientHeight) / symbolHight)
+      const index = 0
+      console.log(`translateY: ${translateY}`)
       console.log(`onStop: ${symbols[index]}`)
       setHitSymbol(symbols[index])
       onStop(symbols[index])
@@ -105,18 +100,18 @@ export function YukariEye ({
   }, [stopSignal])
 
   return (
-    <SymbolView height={symbolHight}>
+    <SymbolView>
       <Display visible={hitSymbol === null}>
         <div ref={reelRef as any}>
           {
             [...symbols, ...symbols, ...symbols]
-              .map((symbol, i) => <Symbol key={i} height={symbolHight} value={symbol} />)
+              .map((symbol, i) => <Symbol key={i} value={symbol} />)
           }
         </div>
       </Display>
       {
         hitSymbol !== null &&
-          <Symbol height={symbolHight} value={hitSymbol} />
+          <Symbol value={hitSymbol} />
       }
     </SymbolView>
   )

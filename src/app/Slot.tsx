@@ -30,7 +30,7 @@ function ActionButton (props: {} & ButtonProps) {
   return (
     <Button
       {...props}
-      style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px', ...props.style }}
+      style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px 0', ...props.style }}
       block
       size='large'
     />
@@ -55,7 +55,7 @@ export function Slot () {
   }
 
   return (
-    <div>
+    <>
       <YukariFace>
         <YukariEye stopSignal={stopSingalCount >= 1} onStop={setLeftEye} />
         <YukariEye stopSignal={stopSingalCount >= 2} onStop={setRightEye} />
@@ -84,6 +84,6 @@ export function Slot () {
         >結果をツイート！
         </ActionButton>
       </div>
-    </div>
+    </>
   )
 }

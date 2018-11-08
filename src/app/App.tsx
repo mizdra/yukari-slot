@@ -8,12 +8,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: "M PLUS Rounded 1c";
+  padding: 10px;
 `
 
 const Description = styled.div`
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
-  padding: 20px;
   text-align: center;
 `
 
