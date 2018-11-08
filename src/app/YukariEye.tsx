@@ -65,6 +65,8 @@ export function YukariEye ({
 
     const target = reelRef.current
 
+    console.log(`target.clientHeight: ${target.clientHeight}`)
+
     const animation = target.animate([
       { transform: 'translateY(0px)' },
       { transform: `translateY(${target.clientHeight / 3}px)` },
@@ -74,6 +76,7 @@ export function YukariEye ({
     })
     animation.pause()
     animationRef.current = animation
+    console.log(animation)
 
     return () => {
       console.log('cleanup')
