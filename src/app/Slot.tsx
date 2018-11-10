@@ -22,7 +22,7 @@ function createTweetLink (leftEye?: number, rightEye?: number): string {
 
   const encodedText = encodeURIComponent(text)
   const encodedHashtags = encodeURIComponent('ゆかりスロット')
-  const url = encodeURIComponent(`https://yukari-slot.netlify.com/share/${leftEye}${rightEye}`)
+  const url = encodeURIComponent(`https://yukari-slot.mizdra.net/share/${leftEye}${rightEye}`)
   return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${url}`
 }
 

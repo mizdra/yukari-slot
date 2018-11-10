@@ -21,8 +21,8 @@ function responseSharePage (callback: Callack, num: string) {
         <!-- OGP -->
         <meta property="og:title" content="ゆかりスロット" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yukari-slot.netlify.com" />
-        <meta property="og:image" content="https://yukari-slot.netlify.com/img/share/${num}.png" />
+        <meta property="og:url" content="https://yukari-slot.mizdra.net" />
+        <meta property="og:image" content="https://yukari-slot.mizdra.net/img/share/${num}.png" />
         <meta property="og:description" content="ボタンを押してゆかりちゃんを完成させよう！" />
         <meta property="og:locale" content="ja_JP" />
         <meta property="og:site_name" content="ゆかりスロット" />
@@ -31,7 +31,7 @@ function responseSharePage (callback: Callack, num: string) {
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site:id" content="@mizdra" />
 
-        <meta http-equiv="refresh" content="0 ; URL=https://yukari-slot.netlify.com">
+        <meta http-equiv="refresh" content="0 ; URL=https://yukari-slot.mizdra.net">
       </head>
       <body>リダイレクト中.</body>
       </html>
