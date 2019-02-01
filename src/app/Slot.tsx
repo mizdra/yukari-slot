@@ -36,9 +36,7 @@ function createShareData (
       : leftEye === 1 && rightEye === 1
       ? 'ゆかりちゃん完成！！！'
       : 'ゆかりスロット失敗 😥'
-  const url = encodeURIComponent(
-    `https://yukari-slot.mizdra.net/share/${leftEye}${rightEye}`,
-  )
+  const url = `https://yukari-slot.mizdra.net/share/${leftEye}${rightEye}`
   return { text, url }
 }
 
@@ -49,7 +47,8 @@ function createTweetLink (
   const { text, url } = createShareData(leftEye, rightEye)
   const encodedText = encodeURIComponent(text)
   const encodedHashtags = encodeURIComponent('ゆかりスロット')
-  return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${url}`
+  const encodedUrl = encodeURIComponent(url)
+  return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${encodedUrl}`
 }
 
 function share (leftEye: number | undefined, rightEye: number | undefined) {
