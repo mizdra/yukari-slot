@@ -1,14 +1,14 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint-config-standard",
-    "tslint-react"
-  ],
+  "extends": ["tslint-config-standard", "tslint-react"],
   "rules": {
     "jsx-boolean-value": [true, "never"],
     "jsx-no-multiline-js": false,
+    "jsx-no-lambda": false,
     "ordered-imports": true,
+    "object-literal-sort-keys": false,
+    "interface-name": false,
     "indent": [true, "spaces", 2],
-    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}]
+    "trailing-comma": [true, { "multiline": "always", "singleline": "never" }]
   }
 }

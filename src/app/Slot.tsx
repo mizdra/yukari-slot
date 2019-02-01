@@ -1,7 +1,6 @@
 import { Button } from 'antd'
 import { ButtonProps } from 'antd/lib/button'
 import React from 'react'
-import styled from 'styled-components'
 import { YukariEye } from './YukariEye'
 import { YukariFace } from './YukariFace'
 
@@ -11,30 +10,44 @@ const useState: <T>(
 
 const useEffect: (f: () => void) => void = (React as any).useEffect
 
-function createTweetLink (leftEye?: number, rightEye?: number): string {
-  const text =
-    leftEye === undefined || rightEye === undefined ?
-      'エラー'
-    : leftEye === 1 && rightEye === 1 ?
-      'ゆかりちゃん完成！！！'
-    :
-      'ゆかりスロット失敗 😥'
-
-  const encodedText = encodeURIComponent(text)
-  const encodedHashtags = encodeURIComponent('ゆかりスロット')
-  const url = encodeURIComponent(`https://yukari-slot.mizdra.net/share/${leftEye}${rightEye}`)
-  return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${url}`
-}
-
 function ActionButton (props: {} & ButtonProps) {
   return (
     <Button
       {...props}
-      style={{ fontSize: '25px', height: 'auto', padding: '15px', margin: '10px 0', ...props.style }}
+      style={{
+        fontSize: '25px',
+        height: 'auto',
+        padding: '15px',
+        margin: '10px 0',
+        ...props.style,
+      }}
       block
       size='large'
     />
   )
+}
+
+function share (leftEye: number | undefined, rightEye: number | undefined) {
+  const text =
+    leftEye === undefined || rightEye === undefined
+      ? 'エラー'
+      : leftEye === 1 && rightEye === 1
+      ? 'ゆかりちゃん完成！！！'
+      : 'ゆかりスロット失敗 😥'
+  const url = encodeURIComponent(
+    `https://yukari-slot.mizdra.net/share/${leftEye}${rightEye}`,
+  )
+
+  if (navigator.share) {
+    navigator
+      .share({ text, url })
+      .catch(() => alert('シェアに失敗しました. 再度お試し下さい.'))
+  } else {
+    const encodedText = encodeURIComponent(text)
+    const encodedHashtags = encodeURIComponent('ゆかりスロット')
+    const tweetLink = `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${url}`
+    window.open(tweetLink)
+  }
 }
 
 export function Slot () {
@@ -44,7 +57,7 @@ export function Slot () {
   const [stopSingalCount, setStopSignalCount] = useState<number>(0)
 
   const emitStopSignal = () => {
-    setStopSignalCount(prev => prev + 1)
+    setStopSignalCount((prev) => prev + 1)
   }
 
   const retry = () => {
@@ -61,26 +74,27 @@ export function Slot () {
       </YukariFace>
 
       <div>
-        {
-          rightEye === undefined ?
-            <ActionButton
-              style={{ background: '#d01f1f', color: 'white' }}
-              onClick={emitStopSignal}
-            >とめる！
-            </ActionButton>
-          :
-            <ActionButton
-              style={{ background: '#eee', color: '#333' }}
-              onClick={retry}
-            >もう一回！
-            </ActionButton>
-        }
+        {rightEye === undefined ? (
+          <ActionButton
+            style={{ background: '#d01f1f', color: 'white' }}
+            onClick={emitStopSignal}
+          >
+            とめる！
+          </ActionButton>
+        ) : (
+          <ActionButton
+            style={{ background: '#eee', color: '#333' }}
+            onClick={retry}
+          >
+            もう一回！
+          </ActionButton>
+        )}
         <ActionButton
           disabled={rightEye === undefined}
           type='primary'
-          href={createTweetLink(leftEye, rightEye)}
-          target='_blank'
-        >結果をツイート！
+          onClick={() => share(leftEye, rightEye)}
+        >
+          結果をシェアする！
         </ActionButton>
       </div>
     </>
