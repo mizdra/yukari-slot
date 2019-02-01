@@ -27,7 +27,15 @@ function ActionButton (props: {} & ButtonProps) {
   )
 }
 
-function share (leftEye: number | undefined, rightEye: number | undefined) {
+interface ShareData {
+  text: string
+  url: string
+}
+
+function createShareData (
+  leftEye: number | undefined,
+  rightEye: number | undefined,
+): ShareData {
   const text =
     leftEye === undefined || rightEye === undefined
       ? 'エラー'
@@ -37,17 +45,24 @@ function share (leftEye: number | undefined, rightEye: number | undefined) {
   const url = encodeURIComponent(
     `https://yukari-slot.mizdra.net/share/${leftEye}${rightEye}`,
   )
+  return { text, url }
+}
 
-  if (navigator.share) {
-    navigator
-      .share({ text, url })
-      .catch(() => alert('シェアに失敗しました. 再度お試し下さい.'))
-  } else {
-    const encodedText = encodeURIComponent(text)
-    const encodedHashtags = encodeURIComponent('ゆかりスロット')
-    const tweetLink = `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${url}`
-    window.open(tweetLink)
-  }
+function createTweetLink (
+  leftEye: number | undefined,
+  rightEye: number | undefined,
+) {
+  const { text, url } = createShareData(leftEye, rightEye)
+  const encodedText = encodeURIComponent(text)
+  const encodedHashtags = encodeURIComponent('ゆかりスロット')
+  return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${url}`
+}
+
+function share (leftEye: number | undefined, rightEye: number | undefined) {
+  const { text, url } = createShareData(leftEye, rightEye)
+  navigator
+    .share({ text, url })
+    .catch(() => alert('シェアに失敗しました. 再度お試し下さい.'))
 }
 
 export function Slot () {
@@ -89,13 +104,25 @@ export function Slot () {
             もう一回！
           </ActionButton>
         )}
-        <ActionButton
-          disabled={rightEye === undefined}
-          type='primary'
-          onClick={() => share(leftEye, rightEye)}
-        >
-          結果をシェアする！
-        </ActionButton>
+
+        {navigator.share ? (
+          <ActionButton
+            disabled={rightEye === undefined}
+            type='primary'
+            onClick={() => share(leftEye, rightEye)}
+          >
+            結果をシェアする！
+          </ActionButton>
+        ) : (
+          <ActionButton
+            disabled={rightEye === undefined}
+            type='primary'
+            href={createTweetLink(leftEye, rightEye)}
+            target='_blank'
+          >
+            結果をツイート！
+          </ActionButton>
+        )}
       </div>
     </>
   )
