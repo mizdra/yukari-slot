@@ -4,13 +4,7 @@ import React from 'react'
 import { YukariEye } from './YukariEye'
 import { YukariFace } from './YukariFace'
 
-const useState: <T>(
-  t: T,
-) => [T, (prev: T | ((t: T) => T)) => void] = (React as any).useState
-
-const useEffect: (f: () => void) => void = (React as any).useEffect
-
-function ActionButton (props: {} & ButtonProps) {
+function ActionButton (props: ButtonProps) {
   return (
     <Button
       {...props}
@@ -66,10 +60,10 @@ function share (leftEye: number | undefined, rightEye: number | undefined) {
 }
 
 export function Slot () {
-  const [leftEye, setLeftEye] = useState<number | undefined>(undefined)
-  const [rightEye, setRightEye] = useState<number | undefined>(undefined)
+  const [leftEye, setLeftEye] = React.useState<number | undefined>(undefined)
+  const [rightEye, setRightEye] = React.useState<number | undefined>(undefined)
 
-  const [stopSingalCount, setStopSignalCount] = useState<number>(0)
+  const [stopSingalCount, setStopSignalCount] = React.useState<number>(0)
 
   const emitStopSignal = () => {
     setStopSignalCount((prev) => prev + 1)

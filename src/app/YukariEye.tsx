@@ -9,15 +9,8 @@ export interface Props {
   duration?: number
 }
 
-export type UseState = <T>(initialState: T | (() => T)) => [T, (newState: T | ((newState: T) => T)) => void]
-export const useState: UseState = (React as any).useState
-
 export type UseEffect = (didUpdate: () => void, params?: any[]) => void
 export const useEffect: UseEffect = (React as any).useEffect
-
-export interface ReactRef<T> {current: T}
-export type UseRef = <T>(initialValue: T) => ReactRef<T>
-export const useRef: UseRef = (React as any).useRef
 
 const SymbolView = styled.div`
   overflow-y: hidden;
@@ -26,10 +19,12 @@ const SymbolView = styled.div`
   width: 100%;
 `
 
-const Display = styled.div<{visible: boolean}>`
-  ${props => !props.visible && css`
-    display: none;
-  `}
+const Display = styled.div<{ visible: boolean }>`
+  ${(props) =>
+    !props.visible &&
+    css`
+      display: none;
+    `}
 `
 
 interface SymbolProps {
@@ -37,7 +32,14 @@ interface SymbolProps {
 }
 
 function Symbol (props: SymbolProps) {
-  return <img src={eyes[props.value]} width='100%' height='100%' style={{ display: 'block' }} />
+  return (
+    <img
+      src={eyes[props.value]}
+      width='100%'
+      height='100%'
+      style={{ display: 'block' }}
+    />
+  )
 }
 
 function getTranslateY (elem: HTMLElement) {
@@ -58,8 +60,12 @@ async function waitEyeLoaded () {
   await Promise.all(eyes.map(waitImageLoaded))
 }
 
-function useSpin (reelRef: ReactRef<HTMLDivElement | null>, symbolSize: number, duration: number) {
-  const [animation, setAnimation] = useState<Animation | null>(null)
+function useSpin (
+  reelRef: React.MutableRefObject<HTMLDivElement>,
+  symbolSize: number,
+  duration: number,
+) {
+  const [animation, setAnimation] = React.useState<Animation | null>(null)
 
   useEffect(async () => {
     console.log('play')
@@ -71,13 +77,16 @@ function useSpin (reelRef: ReactRef<HTMLDivElement | null>, symbolSize: number, 
 
     console.log(`target.clientHeight: ${target.clientHeight}`)
 
-    const a = target.animate([
-      { transform: 'translateY(0px)' },
-      { transform: `translateY(${target.clientHeight / 3}px)` },
-    ] as Keyframe[], {
-      duration: duration * symbolSize * 3,
-      iterations: Infinity,
-    })
+    const a = target.animate(
+      [
+        { transform: 'translateY(0px)' },
+        { transform: `translateY(${target.clientHeight / 3}px)` },
+      ] as Keyframe[],
+      {
+        duration: duration * symbolSize * 3,
+        iterations: Infinity,
+      },
+    )
     a.pause()
     setAnimation(a)
     console.log(a)
@@ -91,9 +100,14 @@ function useSpin (reelRef: ReactRef<HTMLDivElement | null>, symbolSize: number, 
   return animation
 }
 
-function useStop (animation: Animation | null, reelRef: ReactRef<HTMLDivElement | null>, symbols: number[], stopSignal: boolean, onStop: (symbol: number) => void) {
-
-  const [hitSymbol, setHitSymbol] = useState<number | null>(null)
+function useStop (
+  animation: Animation | null,
+  reelRef: React.MutableRefObject<HTMLDivElement>,
+  symbols: number[],
+  stopSignal: boolean,
+  onStop: (symbol: number) => void,
+) {
+  const [hitSymbol, setHitSymbol] = React.useState<number | null>(null)
 
   useEffect(() => {
     if (!animation) return
@@ -123,8 +137,7 @@ export function YukariEye ({
   onStop,
   stopSignal,
 }: Props) {
-
-  const reelRef = useRef<HTMLDivElement>(null as any)
+  const reelRef = React.useRef<HTMLDivElement>(null as any)
 
   // unmount
   const animation = useSpin(reelRef, symbols.length, duration)
@@ -134,18 +147,20 @@ export function YukariEye ({
 
   return (
     <SymbolView>
-      <Display visible={hitSymbol === null} style={{ position: 'absolute', bottom: 0 }}>
-        <div ref={reelRef as any} style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-          {
-            [...symbols, ...symbols, ...symbols]
-              .map((symbol, i) => <Symbol key={i} value={symbol} />)
-          }
+      <Display
+        visible={hitSymbol === null}
+        style={{ position: 'absolute', bottom: 0 }}
+      >
+        <div
+          ref={reelRef as any}
+          style={{ display: 'flex', flexDirection: 'column-reverse' }}
+        >
+          {[...symbols, ...symbols, ...symbols].map((symbol, i) => (
+            <Symbol key={i} value={symbol} />
+          ))}
         </div>
       </Display>
-      {
-        hitSymbol !== null &&
-          <Symbol value={hitSymbol} />
-      }
+      {hitSymbol !== null && <Symbol value={hitSymbol} />}
     </SymbolView>
   )
 }
