@@ -55,7 +55,8 @@ function createTweetLink (
 function share (leftEye: number | undefined, rightEye: number | undefined) {
   const { text, url } = createShareData(leftEye, rightEye)
   navigator
-    .share({ text, url })
+    // ハッシュタグを付加して共有
+    .share({ text: `${text} #ゆかりスロット`, url })
     .catch(() => alert('シェアに失敗しました. 再度お試し下さい.'))
 }
 
