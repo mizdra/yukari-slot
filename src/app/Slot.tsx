@@ -40,23 +40,30 @@ function createShareData (
   return { text, url }
 }
 
-function createTweetLink (
-  leftEye: number | undefined,
-  rightEye: number | undefined,
-) {
-  const { text, url } = createShareData(leftEye, rightEye)
+function createTweetLink (text: string, url: string) {
   const encodedText = encodeURIComponent(text)
   const encodedHashtags = encodeURIComponent('ゆかりスロット')
   const encodedUrl = encodeURIComponent(url)
   return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${encodedUrl}`
 }
 
-function share (leftEye: number | undefined, rightEye: number | undefined) {
+async function share (
+  leftEye: number | undefined,
+  rightEye: number | undefined,
+) {
   const { text, url } = createShareData(leftEye, rightEye)
-  navigator
-    // ハッシュタグを付加して共有
-    .share({ text: `${text} #ゆかりスロット`, url })
-    .catch(() => alert('シェアに失敗しました. 再度お試し下さい.'))
+
+  try {
+    await navigator
+      // ハッシュタグを付加して共有
+      .share({ text: `${text} #ゆかりスロット`, url })
+  } catch (e) {
+    if (e.name === 'AbortError') return
+
+    // navigator.share がない環境やシェアに失敗した場合は
+    // Twitter Web Intentにfallbackする
+    window.open(createTweetLink(text, url))
+  }
 }
 
 export function Slot () {
@@ -99,24 +106,13 @@ export function Slot () {
           </ActionButton>
         )}
 
-        {navigator.share ? (
-          <ActionButton
-            disabled={rightEye === undefined}
-            type='primary'
-            onClick={() => share(leftEye, rightEye)}
-          >
-            結果をシェアする！
-          </ActionButton>
-        ) : (
-          <ActionButton
-            disabled={rightEye === undefined}
-            type='primary'
-            href={createTweetLink(leftEye, rightEye)}
-            target='_blank'
-          >
-            結果をツイート！
-          </ActionButton>
-        )}
+        <ActionButton
+          disabled={rightEye === undefined}
+          type='primary'
+          onClick={() => share(leftEye, rightEye)}
+        >
+          結果をシェアする！
+        </ActionButton>
       </div>
     </>
   )
