@@ -1,14 +1,9 @@
 [build]
   command = "yarn build"
   publish = "dist/app"
-  functions = "dist/functions"
 
 [build.environment]
   NODE_VERSION = "10.8.0"
   NPM_VERSION = "6.3.0"
   YARN_VERSION = "1.9.4"
 
-[[redirects]]
-  from = "/share/*"
-  to = "/.netlify/functions/share/:splat"
-  status = 200

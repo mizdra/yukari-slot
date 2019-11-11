@@ -3,16 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const rootPath = resolve(__dirname, '.')
-const srcPath  = resolve(__dirname, './src')
+const srcPath = resolve(__dirname, './src')
 const distPath = resolve(__dirname, './dist')
 const staticPath = resolve(__dirname, './static')
 
 const appConfig = {
   entry: {
-    app: [
-      'tslib',
-      resolve(srcPath, 'app', './index.tsx'),
-    ],
+    app: ['tslib', resolve(srcPath, 'app', './index.tsx')],
   },
   output: {
     path: resolve(distPath, 'app'),
@@ -56,28 +53,4 @@ const appConfig = {
   },
 }
 
-const functionsConfig = {
-  target: 'node',
-  entry: {
-    share: [
-      'tslib',
-      resolve(srcPath, 'functions', 'share.ts'),
-    ],
-  },
-  output: {
-    path: resolve(distPath, 'functions'),
-    filename: '[name].js',
-  },
-
-  module: {
-    rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
-    ],
-  },
-
-  resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
-  },
-}
-
-module.exports = [appConfig, functionsConfig]
+module.exports = [appConfig]
