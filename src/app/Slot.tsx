@@ -1,3 +1,4 @@
+import { TwitterOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { ButtonProps } from 'antd/lib/button'
 import React from 'react'
@@ -9,7 +10,7 @@ function ActionButton (props: ButtonProps) {
     <Button
       {...props}
       style={{
-        fontSize: '25px',
+        fontSize: 'min(25px, 6vw)',
         height: 'auto',
         padding: '15px',
         margin: '10px 0',
