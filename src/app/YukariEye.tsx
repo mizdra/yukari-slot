@@ -48,18 +48,6 @@ function getTranslateY (elem: HTMLElement) {
   return parseInt(translateY, 10)
 }
 
-async function waitImageLoaded (src: string) {
-  return new Promise((resolve) => {
-    const img = new Image()
-    img.src = src
-    img.onload = resolve
-  })
-}
-
-async function waitEyeLoaded () {
-  await Promise.all(eyes.map(waitImageLoaded))
-}
-
 function useSpin (
   reelRef: React.MutableRefObject<HTMLDivElement>,
   symbolSize: number,
@@ -67,15 +55,8 @@ function useSpin (
 ) {
   const [animation, setAnimation] = React.useState<Animation | null>(null)
 
-  useEffect(async () => {
-    console.log('play')
-
+  useEffect(() => {
     const target = reelRef.current
-    if (target === null) return
-
-    await waitEyeLoaded()
-
-    console.log(`target.clientHeight: ${target.clientHeight}`)
 
     const a = target.animate(
       [
@@ -89,10 +70,8 @@ function useSpin (
     )
     a.pause()
     setAnimation(a)
-    console.log(a)
 
     return () => {
-      console.log('cleanup')
       a.cancel()
     }
   }, [symbolSize])
@@ -110,21 +89,21 @@ function useStop (
   const [hitSymbol, setHitSymbol] = React.useState<number | null>(null)
 
   useEffect(() => {
-    if (!animation) return
-    if (stopSignal) {
-      animation.pause()
-      const target = reelRef.current
-      if (target === null) return
-      const translateY = getTranslateY(target)
+    if (animation) {
+      if (stopSignal) {
+        animation.pause()
+        const target = reelRef.current
+        const translateY = getTranslateY(target)
 
-      const symbolHeight = target.clientHeight / 3 / symbols.length
-      const index = Math.round(translateY / symbolHeight) % symbols.length
+        const symbolHeight = target.clientHeight / 3 / symbols.length
+        const index = Math.round(translateY / symbolHeight) % symbols.length
 
-      setHitSymbol(symbols[index])
-      onStop(symbols[index])
-    } else {
-      animation.play()
-      setHitSymbol(null)
+        setHitSymbol(symbols[index])
+        onStop(symbols[index])
+      } else {
+        animation.play()
+        setHitSymbol(null)
+      }
     }
   }, [stopSignal, animation])
 

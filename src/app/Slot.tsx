@@ -1,3 +1,4 @@
+import { TwitterOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { ButtonProps } from 'antd/lib/button'
 import React from 'react'
@@ -9,7 +10,7 @@ function ActionButton (props: ButtonProps) {
     <Button
       {...props}
       style={{
-        fontSize: '25px',
+        fontSize: 'min(25px, 6vw)',
         height: 'auto',
         padding: '15px',
         margin: '10px 0',
@@ -47,22 +48,27 @@ function createTweetLink (text: string, url: string) {
   return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${encodedUrl}`
 }
 
-async function share (
+async function shareWithTwitterIntent (
   leftEye: number | undefined,
   rightEye: number | undefined,
 ) {
   const { text, url } = createShareData(leftEye, rightEye)
+  // navigator.share がない環境やシェアに失敗した場合は
+  // Twitter Web Intentにfallbackする
+  window.open(createTweetLink(text, url))
+}
 
+async function shareWithWebShareAPI (
+  leftEye: number | undefined,
+  rightEye: number | undefined,
+) {
+  const { text, url } = createShareData(leftEye, rightEye)
   try {
     await navigator
       // ハッシュタグを付加して共有
       .share({ text: `${text} #ゆかりスロット`, url })
   } catch (e) {
     if (e.name === 'AbortError') return
-
-    // navigator.share がない環境やシェアに失敗した場合は
-    // Twitter Web Intentにfallbackする
-    window.open(createTweetLink(text, url))
   }
 }
 
@@ -109,10 +115,18 @@ export function Slot () {
         <ActionButton
           disabled={rightEye === undefined}
           type='primary'
-          onClick={() => share(leftEye, rightEye)}
+          onClick={() => shareWithTwitterIntent(leftEye, rightEye)}
         >
-          結果をシェアする！
+          結果を<TwitterOutlined />でシェアする！
         </ActionButton>
+
+        {navigator.share && <ActionButton
+          disabled={rightEye === undefined}
+          type='primary'
+          onClick={() => shareWithWebShareAPI(leftEye, rightEye)}
+        >
+          他の方法でシェアする！
+        </ActionButton>}
       </div>
     </>
   )
