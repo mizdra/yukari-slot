@@ -48,18 +48,6 @@ function getTranslateY (elem: HTMLElement) {
   return parseInt(translateY, 10)
 }
 
-async function waitImageLoaded (src: string) {
-  return new Promise((resolve) => {
-    const img = new Image()
-    img.src = src
-    img.onload = resolve
-  })
-}
-
-async function waitEyeLoaded () {
-  await Promise.all(eyes.map(waitImageLoaded))
-}
-
 function useSpin (
   reelRef: React.MutableRefObject<HTMLDivElement>,
   symbolSize: number,
@@ -72,8 +60,6 @@ function useSpin (
 
     const target = reelRef.current
     if (target === null) return
-
-    await waitEyeLoaded()
 
     console.log(`target.clientHeight: ${target.clientHeight}`)
 
