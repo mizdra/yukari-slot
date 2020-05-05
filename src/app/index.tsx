@@ -1,4 +1,4 @@
-import { LocaleProvider } from 'antd'
+import { ConfigProvider } from 'antd'
 import 'antd/dist/antd.css'
 import jaJP from 'antd/lib/locale-provider/ja_JP'
 import React from 'react'
@@ -7,7 +7,7 @@ import 'web-animations-js'
 import { App } from './App'
 
 ReactDOM.render((
-  <LocaleProvider locale={jaJP}>
+  <ConfigProvider locale={jaJP}>
     <App />
-  </LocaleProvider>
+  </ConfigProvider>
 ), document.getElementById('app'))
