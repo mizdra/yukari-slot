@@ -57,7 +57,6 @@ function useSpin (
 
   useEffect(() => {
     const target = reelRef.current
-    if (target === null) return
 
     const a = target.animate(
       [
@@ -94,7 +93,6 @@ function useStop (
       if (stopSignal) {
         animation.pause()
         const target = reelRef.current
-        if (target === null) return
         const translateY = getTranslateY(target)
 
         const symbolHeight = target.clientHeight / 3 / symbols.length
