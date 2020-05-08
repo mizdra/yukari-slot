@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { eyes } from './parts'
 
@@ -8,9 +8,6 @@ export interface Props {
   symbols?: number[]
   duration?: number
 }
-
-export type UseEffect = (didUpdate: () => void, params?: any[]) => void
-export const useEffect: UseEffect = (React as any).useEffect
 
 const SymbolView = styled.div`
   overflow-y: hidden;
