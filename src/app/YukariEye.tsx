@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { eyes } from './parts'
 
-export interface Props {
-  stopSignal: boolean
+export interface YukariEyeProps {
   onStop: (symbol: number) => void
   symbols?: number[]
   duration?: number
@@ -107,16 +106,30 @@ function useStop (
   return hitSymbol
 }
 
-export function YukariEye ({
+export interface YukariEyeHandler {
+  start (): void
+  stop (): void
+}
+
+export const YukariEye = forwardRef<YukariEyeHandler, YukariEyeProps>(function YukariEye ({
   symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   duration = 30,
   onStop,
-  stopSignal,
-}: Props) {
+}, ref) {
   const reelRef = React.useRef<HTMLDivElement>(null as any)
 
   // unmount
   const animation = useSpin(reelRef, symbols.length, duration)
+
+  const [stopSignal, setStopSignal] = useState(false)
+  useImperativeHandle(ref, () => ({
+    start: () => {
+      setStopSignal(false)
+    },
+    stop: () => {
+      setStopSignal(true)
+    },
+  }))
 
   // stop
   const hitSymbol = useStop(animation, reelRef, symbols, stopSignal, onStop)
@@ -139,4 +152,4 @@ export function YukariEye ({
       {hitSymbol !== null && <Symbol value={hitSymbol} />}
     </SymbolView>
   )
-}
+})
