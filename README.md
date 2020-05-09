@@ -3,7 +3,7 @@
 『ゆゆ式』の日向縁さんの誕生日をお祝いして作成したスロットゲームです.
 
 - 解説: [日向縁さんの誕生日をお祝いしてゲームを作った話 - mizdra's blog](https://www.mizdra.net/entry/2018/12/09/235545)
-- SpeakerDeck: [祝う2 - Speaker Deck](https://speakerdeck.com/mizdra/zhu-u2)
+- SpeakerDeck: [祝う 2 - Speaker Deck](https://speakerdeck.com/mizdra/zhu-u2)
 
 ## Requirements
 
@@ -20,6 +20,7 @@ $ yarn run dev
 ```
 
 ## develop || build || install
+
 see `package.json`
 
 ## License
@@ -27,5 +28,6 @@ see `package.json`
 MIT
 
 ## Special Thanks
+
 - 愉快な日向縁さんの絵を提供してくれた匿名さん
 - 三上小又先生

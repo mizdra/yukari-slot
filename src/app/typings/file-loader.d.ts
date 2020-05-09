@@ -1,5 +1,5 @@
 declare module '*.png' {
-  const content: string
+  const content: string;
   // eslint-disable-next-line import/no-default-export
-  export default content
+  export default content;
 }
