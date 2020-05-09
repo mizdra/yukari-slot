@@ -1,11 +1,11 @@
-const { resolve } = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const rootPath = resolve(__dirname, '.')
-const srcPath = resolve(__dirname, './src')
-const distPath = resolve(__dirname, './dist')
-const staticPath = resolve(__dirname, './static')
+const rootPath = resolve(__dirname, '.');
+const srcPath = resolve(__dirname, './src');
+const distPath = resolve(__dirname, './dist');
+const staticPath = resolve(__dirname, './static');
 
 const appConfig = {
   entry: {
@@ -18,7 +18,14 @@ const appConfig = {
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          configFile: resolve(rootPath, 'tsconfig.json'),
+        },
+      },
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       {
         test: /\.(png|jpg|gif)$/,
@@ -51,6 +58,6 @@ const appConfig = {
     contentBase: srcPath,
     watchContentBase: true,
   },
-}
+};
 
-module.exports = [appConfig]
+module.exports = [appConfig];

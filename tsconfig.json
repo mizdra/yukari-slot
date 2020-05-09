@@ -14,6 +14,7 @@
 
     /* Strict Type-Checking Options */
     "strict": true,
+    "skipLibCheck": true,
 
     /* Helper Options */
     "noEmitHelpers": true,
@@ -22,8 +23,8 @@
     /* Debug Options */
     "sourceMap": true,
     "pretty": true,
-    "locale": "ja",
-  },
+    "locale": "ja"
+  }
   // "include": ["./src/**/*"],
   // "exclude": ["./node_modules"]
 }
