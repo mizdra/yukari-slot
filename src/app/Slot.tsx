@@ -85,7 +85,7 @@ export function Slot () {
         <ActionButton
           disabled={rightEye === undefined}
           type='primary'
-          onClick={() => shareWithTwitterIntent(leftEye, rightEye)}
+          onClick={() => void shareWithTwitterIntent(leftEye, rightEye)}
         >
           結果を<TwitterOutlined />でシェアする！
         </ActionButton>
@@ -93,7 +93,7 @@ export function Slot () {
         {navigator.share && <ActionButton
           disabled={rightEye === undefined}
           type='primary'
-          onClick={() => shareWithWebShareAPI(leftEye, rightEye)}
+          onClick={() => void shareWithWebShareAPI(leftEye, rightEye)}
         >
           他の方法でシェアする！
         </ActionButton>}

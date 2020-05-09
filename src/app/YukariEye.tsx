@@ -40,7 +40,7 @@ function Symbol (props: SymbolProps) {
 
 function getTranslateY (elem: HTMLElement) {
   const matrix = getComputedStyle(elem).transform || 'matrix(0, 0, 0, 0, 0, 0)'
-  const translateY = matrix.match(/matrix\(.*\, (.*)\)/)![1]
+  const translateY = /matrix\(.*, (.*)\)/.exec(matrix)![1]
   return parseInt(translateY, 10)
 }
 
@@ -73,7 +73,7 @@ function useSpin (
     return () => {
       a.cancel()
     }
-  }, [symbolSize])
+  }, [duration, reelRef, symbolSize])
 
   const stop = useCallback(() => {
     const target = reelRef.current
@@ -86,7 +86,7 @@ function useSpin (
     const index = Math.round(translateY / symbolHeight) % symbols.length
 
     setHitSymbol(symbols[index])
-  }, [animation, setHitSymbol])
+  }, [animation, reelRef, symbols])
 
   const start = useCallback(() => {
     if (animation === null) throw new Error('`animation` がまだ初期化されていません')
