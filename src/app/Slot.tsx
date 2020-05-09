@@ -1,8 +1,8 @@
 import { TwitterOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { ButtonProps } from 'antd/lib/button'
-import React from 'react'
-import { YukariEye } from './YukariEye'
+import React, { useEffect } from 'react'
+import { YukariEye, YukariEyeHandler } from './YukariEye'
 import { YukariFace } from './YukariFace'
 
 function ActionButton (props: ButtonProps) {
@@ -72,34 +72,61 @@ async function shareWithWebShareAPI (
   }
 }
 
+/** 以前の値を返すHook */
+function usePrevious<T> (value: T) {
+  const ref = React.useRef<T>()
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+}
+
 export function Slot () {
   const [leftEye, setLeftEye] = React.useState<number | undefined>(undefined)
   const [rightEye, setRightEye] = React.useState<number | undefined>(undefined)
 
-  const [stopSingalCount, setStopSignalCount] = React.useState<number>(0)
+  // 配列で管理しているので目が 3 つに増えても大丈夫
+  const [isReelRollings, setIsReelRollings] = React.useState([true, true])
+  const refs = React.useRef([React.createRef<YukariEyeHandler>(), React.createRef<YukariEyeHandler>()])
 
-  const emitStopSignal = () => {
-    setStopSignalCount((prev) => prev + 1)
+  const handleStop = () => {
+    // 先頭から順に true になっているものを探して false にする
+    const index = isReelRollings.indexOf(true)
+    // ref: https://stackoverflow.com/questions/38060705/replace-element-at-specific-position-in-an-array-without-mutating-it
+    setIsReelRollings(Object.assign([], isReelRollings, { [index]: false }))
   }
 
   const retry = () => {
-    setStopSignalCount(0)
+    setIsReelRollings([true, true])
     setLeftEye(undefined)
     setRightEye(undefined)
   }
 
+  const prevIsReelRollings = usePrevious(isReelRollings)
+  // isReelRollings を監視して値が変わったら start/stop する
+  useEffect(() => {
+    // 初回の call ではそもそも停止ボタンは押されないので無視して良い
+    if (prevIsReelRollings === undefined) return
+
+    isReelRollings.forEach((isReelRolling, idx) => {
+      if (prevIsReelRollings[idx] === isReelRolling) return
+      if (prevIsReelRollings[idx] && !isReelRolling) return refs.current[idx].current?.stop()
+      if (!prevIsReelRollings[idx] && isReelRolling) return refs.current[idx].current?.start()
+    })
+  }, [isReelRollings, prevIsReelRollings, refs])
+
   return (
     <>
       <YukariFace>
-        <YukariEye stopSignal={stopSingalCount >= 1} onStop={setLeftEye} />
-        <YukariEye stopSignal={stopSingalCount >= 2} onStop={setRightEye} />
+        <YukariEye ref={refs.current[0]} onStop={setLeftEye} />
+        <YukariEye ref={refs.current[1]} onStop={setRightEye} />
       </YukariFace>
 
       <div>
         {rightEye === undefined ? (
           <ActionButton
             style={{ background: '#d01f1f', color: 'white' }}
-            onClick={emitStopSignal}
+            onClick={handleStop}
           >
             とめる！
           </ActionButton>

@@ -1,16 +1,12 @@
-import React from 'react'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle } from 'react'
 import styled, { css } from 'styled-components'
 import { eyes } from './parts'
 
-export interface Props {
-  stopSignal: boolean
+export interface YukariEyeProps {
   onStop: (symbol: number) => void
   symbols?: number[]
   duration?: number
 }
-
-export type UseEffect = (didUpdate: () => void, params?: any[]) => void
-export const useEffect: UseEffect = (React as any).useEffect
 
 const SymbolView = styled.div`
   overflow-y: hidden;
@@ -49,14 +45,17 @@ function getTranslateY (elem: HTMLElement) {
 }
 
 function useSpin (
-  reelRef: React.MutableRefObject<HTMLDivElement>,
+  reelRef: React.MutableRefObject<HTMLDivElement | null>,
   symbolSize: number,
   duration: number,
+  symbols: number[],
 ) {
   const [animation, setAnimation] = React.useState<Animation | null>(null)
+  const [hitSymbol, setHitSymbol] = React.useState<number | null>(null)
 
   useEffect(() => {
     const target = reelRef.current
+    if (target === null) return
 
     const a = target.animate(
       [
@@ -68,7 +67,7 @@ function useSpin (
         iterations: Infinity,
       },
     )
-    a.pause()
+    a.play()
     setAnimation(a)
 
     return () => {
@@ -76,53 +75,50 @@ function useSpin (
     }
   }, [symbolSize])
 
-  return animation
+  const stop = useCallback(() => {
+    const target = reelRef.current
+    if (target === null) throw new Error('`target` がまだ初期化されていません')
+    if (animation === null) throw new Error('`animation` がまだ初期化されていません')
+    animation.pause()
+    const translateY = getTranslateY(target)
+
+    const symbolHeight = target.clientHeight / 3 / symbols.length
+    const index = Math.round(translateY / symbolHeight) % symbols.length
+
+    setHitSymbol(symbols[index])
+  }, [animation, setHitSymbol])
+
+  const start = useCallback(() => {
+    if (animation === null) throw new Error('`animation` がまだ初期化されていません')
+    animation.play()
+    setHitSymbol(null)
+  }, [animation])
+
+  return { hitSymbol, start, stop }
 }
 
-function useStop (
-  animation: Animation | null,
-  reelRef: React.MutableRefObject<HTMLDivElement>,
-  symbols: number[],
-  stopSignal: boolean,
-  onStop: (symbol: number) => void,
-) {
-  const [hitSymbol, setHitSymbol] = React.useState<number | null>(null)
-
-  useEffect(() => {
-    if (animation) {
-      if (stopSignal) {
-        animation.pause()
-        const target = reelRef.current
-        const translateY = getTranslateY(target)
-
-        const symbolHeight = target.clientHeight / 3 / symbols.length
-        const index = Math.round(translateY / symbolHeight) % symbols.length
-
-        setHitSymbol(symbols[index])
-        onStop(symbols[index])
-      } else {
-        animation.play()
-        setHitSymbol(null)
-      }
-    }
-  }, [stopSignal, animation])
-
-  return hitSymbol
+export interface YukariEyeHandler {
+  start (): void
+  stop (): void
 }
 
-export function YukariEye ({
+export const YukariEye = forwardRef<YukariEyeHandler, YukariEyeProps>(function YukariEye ({
   symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   duration = 30,
   onStop,
-  stopSignal,
-}: Props) {
-  const reelRef = React.useRef<HTMLDivElement>(null as any)
+}, ref) {
+  const reelRef = React.useRef<HTMLDivElement | null>(null)
 
   // unmount
-  const animation = useSpin(reelRef, symbols.length, duration)
+  const { hitSymbol, start, stop } = useSpin(reelRef, symbols.length, duration, symbols)
 
-  // stop
-  const hitSymbol = useStop(animation, reelRef, symbols, stopSignal, onStop)
+  useImperativeHandle(ref, () => ({
+    start,
+    stop: () => {
+      stop()
+      onStop(hitSymbol!)
+    },
+  }))
 
   return (
     <SymbolView>
@@ -131,7 +127,7 @@ export function YukariEye ({
         style={{ position: 'absolute', bottom: 0 }}
       >
         <div
-          ref={reelRef as any}
+          ref={reelRef}
           style={{ display: 'flex', flexDirection: 'column-reverse' }}
         >
           {[...symbols, ...symbols, ...symbols].map((symbol, i) => (
@@ -142,4 +138,4 @@ export function YukariEye ({
       {hitSymbol !== null && <Symbol value={hitSymbol} />}
     </SymbolView>
   )
-}
+})
