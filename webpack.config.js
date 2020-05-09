@@ -18,7 +18,14 @@ const appConfig = {
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          configFile: resolve(rootPath, 'tsconfig.json'),
+        },
+      },
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       {
         test: /\.(png|jpg|gif)$/,
