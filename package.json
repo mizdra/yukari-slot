@@ -6,7 +6,7 @@
   "scripts": {
     "start": "yarn run dev",
     "dev": "webpack-dev-server --mode development",
-    "lint": "tslint -p . 'src/**/*.ts'",
+    "eslint": "eslint 'src/**/*.{ts,tsx}'",
     "prebuild": "yarn run lint",
     "build": "webpack --mode production"
   },
@@ -15,8 +15,10 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@mizdra/eslint-config-mizdra": "^0.0.1",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.3",
+    "eslint": "^6.8.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "react": "^16.13.1",
