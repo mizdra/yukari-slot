@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle } from 'react'
 import styled, { css } from 'styled-components'
-import { eyes } from './parts'
+import { eyes } from './lib/parts'
 
 export interface YukariEyeProps {
   onStop: (symbol: number) => void

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { face, hair, hairback } from './parts'
+import { face, hair, hairback } from './lib/parts'
 
 export interface Props {
   children: React.ReactNode
