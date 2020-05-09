@@ -5,8 +5,9 @@ module.exports = {
     '@mizdra/mizdra',
     '@mizdra/mizdra/+typescript',
     '@mizdra/mizdra/+react',
+    '@mizdra/mizdra/+prettier',
   ],
   rules: {
     'import/no-unresolved': 0,
-  }
+  },
 };
