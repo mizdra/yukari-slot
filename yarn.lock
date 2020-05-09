@@ -185,10 +185,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
-"@mizdra/eslint-config-mizdra@^0.0.1":
-  version "0.0.1"
-  resolved "https://npm.pkg.github.com/download/@mizdra/eslint-config-mizdra/0.0.1/bdc0eb7fb82666b7ebb4ff80eca86c9c7fd2ee377a59ffb16ad913bd64650b5f#cc93f4e4cdc364f5305b8b084fd96b5845c521eb"
-  integrity sha512-E1G07yfIpj1Pe0EwgsOodiByzeFItbu9eYrYqLMY8vJhvfKGfAGd50/d+pXkpm6sICuvjXojBC/zTkJ748TZ4A==
+"@mizdra/eslint-config-mizdra@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@mizdra/eslint-config-mizdra/-/eslint-config-mizdra-0.1.1.tgz#e6896031fb0d1b10b680f49bc5292a667f89312b"
+  integrity sha512-j5qe1OMSq+ezUHdkPe3KM4wjz6mubIbRo3kedP0CM8hL6t+lHalee5oZ6gsCBTZsflkhEosuO4u9N3Nn+KnEsg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.31.0"
     "@typescript-eslint/parser" "^2.31.0"
@@ -5741,7 +5741,12 @@ tslib@^1.10.0, tslib@^1.11.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
 
-tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.8.1:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.2.tgz#9c79d83272c9a7aaf166f73915c9667ecdde3cc9"
+  integrity sha512-tTSkux6IGPnUGUd1XAZHcpu85MOkIl5zX49pO+jfsie3eP0B6pyhOlLXm3cAC6T7s+euSDDUUV+Acop5WmtkVg==
+
+tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
