@@ -16,6 +16,7 @@ async function waitEyeLoaded() {
 export function useWaitEyeLoaded() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises -- できること無いので無視
     waitEyeLoaded()
       .then(() => setLoaded(true))
       .catch();
