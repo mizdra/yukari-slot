@@ -35,6 +35,6 @@ export async function shareWithWebShareAPI(leftEye: number | undefined, rightEye
       // ハッシュタグを付加して共有
       .share({ text: `${text} #ゆかりスロット`, url });
   } catch (e) {
-    if (e.name === 'AbortError') return;
+    if (e instanceof Error && e.name === 'AbortError') return;
   }
 }

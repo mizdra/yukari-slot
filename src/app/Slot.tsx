@@ -86,7 +86,7 @@ export function Slot() {
           でシェアする！
         </ActionButton>
 
-        {navigator.share && (
+        {!!navigator.share && (
           <ActionButton
             disabled={rightEye === undefined}
             type="primary"
