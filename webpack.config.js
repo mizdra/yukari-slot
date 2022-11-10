@@ -29,9 +29,9 @@ const appConfig = {
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       {
         test: /\.(png|jpg|gif)$/,
-        loader: 'file-loader',
-        options: {
-          name: 'img/[name].[hash].[ext]',
+        type: 'asset/resource',
+        generator: {
+          filename: 'img/[name].[hash].[ext]',
         },
       },
     ],
