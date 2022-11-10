@@ -60,7 +60,7 @@ export function Slot() {
     return () => {
       window.removeEventListener('keydown', listener);
     };
-  })
+  });
 
   const prevIsReelRollings = usePrevious(isReelRollings);
   // isReelRollings を監視して値が変わったら start/stop する
