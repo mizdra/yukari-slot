@@ -104,10 +104,14 @@ export const YukariEye = forwardRef<YukariEyeHandler, YukariEyeProps>(function Y
   useImperativeHandle(ref, () => ({
     start,
     stop: () => {
-      stop();
-      onStop(hitSymbol!);
+      stop(); // stop したら hitSymbol が (少し間を置いて) 決まる
     },
   }));
+
+  // hitSymbol が決まったら onStop を呼ぶ
+  useEffect(() => {
+    if (hitSymbol !== null) onStop(hitSymbol);
+  }, [hitSymbol, onStop]);
 
   return (
     <SymbolView>
