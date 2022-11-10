@@ -52,8 +52,10 @@ const appConfig = {
     }),
   ],
   devServer: {
-    contentBase: srcPath,
-    watchContentBase: true,
+    static: {
+      directory: srcPath,
+      watch: true,
+    },
   },
 };
 
