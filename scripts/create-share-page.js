@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('fs');
 
 function render(numStr) {
   const html =
@@ -37,12 +37,12 @@ function render(numStr) {
     リダイレクト中.
   </body>
 </html>
-  `.trim() + '\n'
-  return html
+  `.trim() + '\n';
+  return html;
 }
 
 for (let i = 0; i < 100; i++) {
-  const numStr = i.toString().padStart(2, '0')
-  const renderedHtml = render(numStr)
-  fs.writeFileSync(`./static/share/${numStr}.html`, renderedHtml)
+  const numStr = i.toString().padStart(2, '0');
+  const renderedHtml = render(numStr);
+  fs.writeFileSync(`./static/share/${numStr}.html`, renderedHtml);
 }

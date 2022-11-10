@@ -1,11 +1,11 @@
-const { resolve } = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const rootPath = resolve(__dirname, '.')
-const srcPath = resolve(__dirname, './src')
-const distPath = resolve(__dirname, './dist')
-const staticPath = resolve(__dirname, './static')
+const rootPath = resolve(__dirname, '.');
+const srcPath = resolve(__dirname, './src');
+const distPath = resolve(__dirname, './dist');
+const staticPath = resolve(__dirname, './static');
 
 const appConfig = {
   entry: {
@@ -18,13 +18,20 @@ const appConfig = {
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          configFile: resolve(rootPath, 'tsconfig.json'),
+        },
+      },
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       {
         test: /\.(png|jpg|gif)$/,
-        loader: 'file-loader',
-        options: {
-          name: 'img/[name].[hash].[ext]',
+        type: 'asset/resource',
+        generator: {
+          filename: 'img/[name].[hash].[ext]',
         },
       },
     ],
@@ -40,17 +47,16 @@ const appConfig = {
       template: resolve(rootPath, './index.html'),
       inject: true,
     }),
-    new CopyWebpackPlugin([
-      {
-        from: staticPath,
-        to: resolve(distPath, 'app'),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [{ from: staticPath, to: resolve(distPath, 'app') }],
+    }),
   ],
   devServer: {
-    contentBase: srcPath,
-    watchContentBase: true,
+    static: {
+      directory: srcPath,
+      watch: true,
+    },
   },
-}
+};
 
-module.exports = [appConfig]
+module.exports = [appConfig];
