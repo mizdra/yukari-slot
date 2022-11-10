@@ -45,6 +45,23 @@ export function Slot() {
     setRightEye(undefined);
   };
 
+  useEffect(() => {
+    const listener = (e: KeyboardEvent) => {
+      if (e.key === ' ') {
+        e.preventDefault();
+        if (rightEye === undefined) {
+          handleStop();
+        } else {
+          retry();
+        }
+      }
+    };
+    window.addEventListener('keydown', listener);
+    return () => {
+      window.removeEventListener('keydown', listener);
+    };
+  });
+
   const prevIsReelRollings = usePrevious(isReelRollings);
   // isReelRollings を監視して値が変わったら start/stop する
   useEffect(() => {

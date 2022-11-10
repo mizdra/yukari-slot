@@ -93,7 +93,7 @@ export interface YukariEyeHandler {
 }
 
 export const YukariEye = forwardRef<YukariEyeHandler, YukariEyeProps>(function YukariEye(
-  { symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], duration = 30, onStop },
+  { symbols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], duration = 40, onStop },
   ref,
 ) {
   const reelRef = React.useRef<HTMLDivElement | null>(null);
