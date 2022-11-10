@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useWaitEyeLoaded } from './hooks/use-wait-eye-loaded';
 import { Slot } from './Slot';
+import { useWaitEyeLoaded } from './hooks/use-wait-eye-loaded';
 
 const Container = styled.div`
   display: flex;

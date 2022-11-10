@@ -2,10 +2,10 @@ import { TwitterOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { ButtonProps } from 'antd/lib/button';
 import React, { useEffect } from 'react';
-import { usePrevious } from './hooks/use-previous';
-import { shareWithTwitterIntent, shareWithWebShareAPI } from './lib/share';
 import { YukariEye, YukariEyeHandler } from './YukariEye';
 import { YukariFace } from './YukariFace';
+import { usePrevious } from './hooks/use-previous';
+import { shareWithTwitterIntent, shareWithWebShareAPI } from './lib/share';
 
 function ActionButton(props: ButtonProps) {
   return (
