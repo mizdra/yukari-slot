@@ -47,12 +47,9 @@ const appConfig = {
       template: resolve(rootPath, './index.html'),
       inject: true,
     }),
-    new CopyWebpackPlugin([
-      {
-        from: staticPath,
-        to: resolve(distPath, 'app'),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [{ from: staticPath, to: resolve(distPath, 'app') }],
+    }),
   ],
   devServer: {
     contentBase: srcPath,
