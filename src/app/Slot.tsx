@@ -79,7 +79,7 @@ export function Slot() {
         <ActionButton
           disabled={rightEye === undefined}
           type="primary"
-          onClick={() => void shareWithTwitterIntent(leftEye, rightEye)}
+          onClick={() => shareWithTwitterIntent(leftEye, rightEye)}
         >
           結果を
           <TwitterOutlined />

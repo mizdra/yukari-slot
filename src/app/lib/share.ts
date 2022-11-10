@@ -21,7 +21,7 @@ function createTweetLink(text: string, url: string) {
   return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags}&url=${encodedUrl}`;
 }
 
-export async function shareWithTwitterIntent(leftEye: number | undefined, rightEye: number | undefined) {
+export function shareWithTwitterIntent(leftEye: number | undefined, rightEye: number | undefined) {
   const { text, url } = createShareData(leftEye, rightEye);
   // navigator.share がない環境やシェアに失敗した場合は
   // Twitter Web Intentにfallbackする
