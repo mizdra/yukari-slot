@@ -4,10 +4,7 @@ type ShareData = {
 };
 
 function createShareData(leftEye: number, rightEye: number): ShareData {
-  const text =
-    leftEye === 1 && rightEye === 1
-      ? 'ゆかりちゃん完成！！！'
-      : 'ゆかりスロット失敗 😥';
+  const text = leftEye === 1 && rightEye === 1 ? 'ゆかりちゃん完成！！！' : 'ゆかりスロット失敗 😥';
   const url = `https://yukari-slot.mizdra.net/share/${leftEye}${rightEye}`;
   return { text, url };
 }
