@@ -7,9 +7,7 @@ export interface Props {
 }
 
 const Container = styled.div<{ hairback: string; face: string }>`
-  background-image:
-    url("${(props) => props.face}"),
-    url("${(props) => props.hairback}");
+  background-image: url('${(props) => props.face}'), url('${(props) => props.hairback}');
   display: flex;
   width: 90vw;
   height: 90vw;
@@ -18,12 +16,11 @@ const Container = styled.div<{ hairback: string; face: string }>`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  position:relative;
+  position: relative;
 `;
 
 const Mask = styled.div<{ hair: string }>`
-  background-image:
-    url("${(props) => props.hair}");
+  background-image: url('${(props) => props.hair}');
   background-size: contain;
   position: absolute;
   z-index: 100;
